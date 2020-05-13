@@ -30,15 +30,21 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(children: [
+      SizedBox(
+        height: 10,
+      ),
       CarouselSlider(
-        options: CarouselOptions(
-          aspectRatio: 2.0,
-          // enlargeCenterPage: true,
-          scrollDirection: Axis.horizontal,
-          autoPlay: true,
-        ),
         items: imageSliders,
+        options: CarouselOptions(
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 2.0,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -56,16 +62,6 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
             ),
           );
         }).toList(),
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      Padding(
-        padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
-        child: Text(
-          "Merchnat Name",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-        ),
       ),
     ]);
   }

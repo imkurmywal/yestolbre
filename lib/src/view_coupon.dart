@@ -84,7 +84,7 @@ class ViewCoupon extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                print("more..");
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Container(
                 color: Colors.black,

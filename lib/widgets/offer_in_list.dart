@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
+import 'package:yestolbre/src/view_coupon.dart';
+import 'package:yestolbre/src/view_offer.dart';
 import 'package:yestolbre/widgets/carousel.dart';
 
 class OfferInList implements ListItem {
@@ -46,7 +48,10 @@ class OfferInList implements ListItem {
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewOffer()));
+                },
                 child: Container(
                   width: 80,
                   height: 30,

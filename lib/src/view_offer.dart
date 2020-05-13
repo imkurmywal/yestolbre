@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yestolbre/src/view_coupon.dart';
 
 class ViewOffer extends StatelessWidget {
   @override
@@ -104,7 +105,10 @@ class ViewOffer extends StatelessWidget {
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewCoupon()));
+                },
                 child: Container(
                   width: 160,
                   height: 30,
