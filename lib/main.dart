@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/home_view.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
+import 'package:yestolbre/src/view_coupon.dart';
 import 'package:yestolbre/src/view_offer.dart';
 
 void main() => runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xffFF5C27),
       ),
-      home: ViewOffer(),
+      home: ViewCoupon(),
     );
   }
 }
