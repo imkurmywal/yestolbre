@@ -16,11 +16,14 @@ class _MapViewState extends State<MapView> {
   var _location = new Location();
   final Map<String, Marker> _markers = {};
   Completer<GoogleMapController> _controller = Completer();
+  BitmapDescriptor pin;
+
   LatLng myLocation;
 
   @override
   void initState() {
     super.initState();
+    setPin();
     _locationServices();
   }
 
@@ -28,12 +31,21 @@ class _MapViewState extends State<MapView> {
     final marker = Marker(
         markerId: MarkerId("id"),
         position: LatLng(myLocation.latitude, myLocation.longitude),
+        icon: pin,
         // infoWindow: InfoWindow(title: "Its me"),
         onTap: () {
           print("its clicked.");
           showBottomSheet();
         });
     _markers["id"] = marker;
+  }
+
+  void setPin() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(50, 56)), 'assets/pin.png')
+        .then((onValue) {
+      pin = onValue;
+    });
   }
 
   void _locationServices() {
