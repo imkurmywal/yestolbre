@@ -12,26 +12,32 @@ class _HomeViewState extends State<HomeView> {
   List<Category> categories = [
     Category(
       title: "Food",
+      icon: Icon(Icons.fastfood),
       index: 0,
     ),
     Category(
       title: "Hotels & Travel",
+      icon: Icon(Icons.hotel),
       index: 1,
     ),
     Category(
       title: "Events",
+      icon: Icon(Icons.event),
       index: 2,
     ),
     Category(
       title: "Services",
+      icon: Icon(Icons.help_outline),
       index: 3,
     ),
     Category(
       title: "Fasion",
+      icon: Icon(Icons.fastfood),
       index: 4,
     ),
     Category(
       title: "Health & Beauty",
+      icon: Icon(Icons.beach_access),
       index: 5,
     ),
   ];
@@ -75,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
                 left: 0,
                 top: 0,
                 right: 0,
-                bottom: 40,
+                bottom: 100,
                 child: MapView(
                   index: _selectedIndex,
                 ),
@@ -86,7 +92,7 @@ class _HomeViewState extends State<HomeView> {
                 right: 0,
                 child: Container(
                   padding: EdgeInsets.all(10),
-                  height: 40,
+                  height: 70,
                   color: Colors.blue[500],
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -102,15 +108,22 @@ class _HomeViewState extends State<HomeView> {
                           child: Container(
                             child: Container(
                               margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: Text(
-                                categories[index].title,
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: _selectedIndex ==
-                                            categories[index].index
-                                        ? Colors.grey[300]
-                                        : Colors.white),
+                              child: Column(
+                                children: <Widget>[
+                                  categories[index].icon,
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    categories[index].title,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: _selectedIndex ==
+                                                categories[index].index
+                                            ? Colors.grey[300]
+                                            : Colors.white),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
