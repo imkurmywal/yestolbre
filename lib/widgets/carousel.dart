@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -12,13 +13,19 @@ final List<String> imgList = [
 ];
 
 class CreateCarousel implements ListItem {
+  Merchant merchant;
+  CreateCarousel({@required this.merchant});
   Widget buildOfferInList(BuildContext context) => null;
   Widget buildCarousel(BuildContext context) {
-    return MyCarousel();
+    return MyCarousel(
+      merchant: merchant,
+    );
   }
 }
 
 class MyCarousel extends StatefulWidget {
+  Merchant merchant;
+  MyCarousel({@required this.merchant});
   @override
   State<StatefulWidget> createState() {
     return _CarouselWithIndicatorState();
@@ -63,6 +70,111 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
           );
         }).toList(),
       ),
+      SizedBox(
+        height: 20,
+      ),
+      Row(
+        children: <Widget>[
+          SizedBox(
+            width: 10,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Image.network(
+                widget.merchant.logoUrl,
+                width: 80,
+                height: 80,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.merchant.name,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  widget.merchant.address,
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                  maxLines: 2,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      "Category",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      widget.merchant.category,
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(),
+                    Text(
+                      "Call Now",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox.fromSize(
+                      size: Size(40, 40), // button width and height
+                      child: ClipOval(
+                        child: Material(
+                          color: Theme.of(context).primaryColor, // button color
+                          child: InkWell(
+                            splashColor: Colors.grey, // splash color
+                            onTap: () {}, // button pressed
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.call, color: Colors.white), // icon
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      )
     ]);
   }
 }

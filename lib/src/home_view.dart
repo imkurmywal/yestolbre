@@ -1,6 +1,8 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/map_view.dart';
 import 'package:yestolbre/src/models/category.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -8,36 +10,32 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final ref = FirebaseDatabase.instance.reference();
+  List<Merchant> allMerchants = new List<Merchant>();
   int _selectedIndex = 0;
   List<Category> categories = [
     Category(
-      title: "Food",
-      icon: Icon(Icons.fastfood),
+      title: "Eat",
       index: 0,
     ),
     Category(
-      title: "Hotels & Travel",
-      icon: Icon(Icons.hotel),
+      title: "Travel",
       index: 1,
     ),
     Category(
       title: "Events",
-      icon: Icon(Icons.event),
       index: 2,
     ),
     Category(
-      title: "Services",
-      icon: Icon(Icons.help_outline),
+      title: "Health",
       index: 3,
     ),
     Category(
-      title: "Fasion",
-      icon: Icon(Icons.fastfood),
+      title: "Services",
       index: 4,
     ),
     Category(
-      title: "Health & Beauty",
-      icon: Icon(Icons.beach_access),
+      title: "Trends",
       index: 5,
     ),
   ];
@@ -45,6 +43,33 @@ class _HomeViewState extends State<HomeView> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void getList() async {
+    ref.child("merchants").onValue.listen((Event event) {
+      allMerchants.clear();
+      if (event.snapshot.value == null) {
+        // _end_loading();
+        return;
+      }
+
+      for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
+        print(value);
+        if (mounted) {
+          setState(() {
+            allMerchants.add(new Merchant.fromJson(value));
+          });
+          // _end_loading();
+        }
+      }
+      print(allMerchants[0].offers[0]);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getList();
   }
 
   @override
@@ -81,9 +106,9 @@ class _HomeViewState extends State<HomeView> {
                 left: 0,
                 top: 0,
                 right: 0,
-                bottom: 100,
+                bottom: 73,
                 child: MapView(
-                  index: _selectedIndex,
+                  merchants: allMerchants,
                 ),
               ),
               Positioned(
@@ -92,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
                 right: 0,
                 child: Container(
                   padding: EdgeInsets.all(10),
-                  height: 70,
+                  height: 73,
                   color: Colors.blue[500],
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -107,10 +132,15 @@ class _HomeViewState extends State<HomeView> {
                           },
                           child: Container(
                             child: Container(
-                              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              width:
+                                  (MediaQuery.of(context).size.width - 20) / 4,
+                              // margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Column(
                                 children: <Widget>[
-                                  categories[index].icon,
+                                  Image.asset(
+                                      "assets/tab_icons/${categories[index].title.toLowerCase()}${_selectedIndex == categories[index].index ? "_white" : ""}.png",
+                                      height: 30,
+                                      width: 35),
                                   SizedBox(
                                     height: 5,
                                   ),
@@ -120,8 +150,8 @@ class _HomeViewState extends State<HomeView> {
                                         fontSize: 15,
                                         color: _selectedIndex ==
                                                 categories[index].index
-                                            ? Colors.grey[300]
-                                            : Colors.white),
+                                            ? Colors.white
+                                            : Colors.black),
                                   ),
                                 ],
                               ),

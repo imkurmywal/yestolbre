@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 
 class MapView extends StatefulWidget {
-  final index;
-  MapView({@required this.index});
+  List<Merchant> merchants = new List<Merchant>();
+  MapView({@required this.merchants});
   @override
   _MapViewState createState() => _MapViewState();
 }
@@ -28,16 +29,18 @@ class _MapViewState extends State<MapView> {
   }
 
   void _setMarker() {
-    final marker = Marker(
-        markerId: MarkerId("id"),
-        position: LatLng(myLocation.latitude, myLocation.longitude),
-        icon: pin,
-        // infoWindow: InfoWindow(title: "Its me"),
-        onTap: () {
-          print("its clicked.");
-          showBottomSheet();
-        });
-    _markers["id"] = marker;
+    for (Merchant merchant in widget.merchants) {
+      final marker = Marker(
+          markerId: MarkerId(merchant.merchantId),
+          position: LatLng(merchant.latitude, merchant.longitude),
+          icon: pin,
+          // infoWindow: InfoWindow(title: "Its me"),
+          onTap: () {
+            print("its clicked.");
+            showBottomSheet(merchant);
+          });
+      _markers[merchant.merchantId] = marker;
+    }
   }
 
   void setPin() {
@@ -75,7 +78,7 @@ class _MapViewState extends State<MapView> {
               mapType: MapType.normal,
               initialCameraPosition: CameraPosition(
                 target: myLocation,
-                zoom: 10,
+                zoom: 12,
               ),
               markers: _markers.values.toSet(),
               onMapCreated: (GoogleMapController controller) {
@@ -86,7 +89,7 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  void showBottomSheet() {
+  void showBottomSheet(Merchant merchant) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext ctx) {
@@ -105,32 +108,63 @@ class _MapViewState extends State<MapView> {
                           children: <Widget>[
                             ClipRRect(
                               borderRadius: BorderRadius.circular(30.0),
-                              child: Image.asset(
-                                'assets/offer.jpeg',
-                                width: 60.0,
-                                height: 60.0,
-                                fit: BoxFit.fill,
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: Image.network(
+                                  merchant.logoUrl,
+                                  width: 80,
+                                  height: 80,
+                                ),
                               ),
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Merchant Name",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  "Merchant Address",
-                                  style: TextStyle(
-                                    fontSize: 15,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    merchant.name,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                    maxLines: 2,
                                   ),
-                                )
-                              ],
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    merchant.address,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Category",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        merchant.category,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -147,7 +181,9 @@ class _MapViewState extends State<MapView> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MerchantView()));
+                                      builder: (context) => MerchantView(
+                                            merchant: merchant,
+                                          )));
                             },
                             child: Container(
                               width: 160,

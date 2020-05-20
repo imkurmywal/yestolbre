@@ -13,10 +13,11 @@ class Merchant {
   String address;
   String logoUrl;
   String phoneNumber;
-  String latitude;
-  String longitude;
+  double latitude;
+  double longitude;
   String fbUrl;
-  Map<String, Offer> offers;
+  Map<dynamic, Offer> offers;
+
   Merchant({
     this.merchantId,
     this.name,
@@ -30,20 +31,20 @@ class Merchant {
     this.offers,
   });
 
-  factory Merchant.fromJson(Map<String, dynamic> json) => Merchant(
+  factory Merchant.fromJson(Map<dynamic, dynamic> json) => Merchant(
         merchantId: json["merchant_id"],
         name: json["name"],
         category: json["category"],
         address: json["address"],
         logoUrl: json["logo_url"],
         phoneNumber: json["phone_number"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        latitude: json["latitude"].toDouble(),
+        longitude: json["longitude"].toDouble(),
         fbUrl: json["fb_url"],
         offers: Map.from(json["offers"])
-            .map((k, v) => MapEntry<String, Offer>(k, Offer.fromJson(v))),
+            .map((k, v) => MapEntry<dynamic, Offer>(k, Offer.fromJson(v))),
       );
-  Map<String, dynamic> toJson() => {
+  Map<dynamic, dynamic> toJson() => {
         "merchant_id": merchantId,
         "name": name,
         "category": category,
@@ -54,6 +55,6 @@ class Merchant {
         "longitude": longitude,
         "fb_url": fbUrl,
         "offers": Map.from(offers)
-            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+            .map((k, v) => MapEntry<dynamic, dynamic>(k, v.toJson())),
       };
 }

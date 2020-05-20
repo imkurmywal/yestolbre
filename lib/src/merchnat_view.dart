@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 import 'package:yestolbre/widgets/carousel.dart';
 import 'package:yestolbre/widgets/offer_in_list.dart';
 
 class MerchantView extends StatefulWidget {
+  Merchant merchant;
+  MerchantView({@required this.merchant});
   @override
   _MerchantViewState createState() => _MerchantViewState();
 }
@@ -19,7 +22,10 @@ class _MerchantViewState extends State<MerchantView> {
   void generateListItems() {
     setState(() {
       list = List<ListItem>.generate(
-          10, (i) => i == 0 ? CreateCarousel() : OfferInList());
+          widget.merchant.offers.length + 1,
+          (i) => i == 0
+              ? CreateCarousel(merchant: widget.merchant)
+              : OfferInList(merchant: widget.merchant, index: i));
     });
   }
 
