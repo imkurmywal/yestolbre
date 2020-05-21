@@ -4,7 +4,7 @@ import 'package:yestolbre/src/models/offer.dart';
 
 Merchant merchantFromJson(String str) => Merchant.fromJson(json.decode(str));
 
-String merchantToJson(Merchant data) => json.encode(data.toJson());
+// String merchantToJson(Merchant data) => json.encode(data.toJson());
 
 class Merchant {
   String merchantId;
@@ -16,7 +16,7 @@ class Merchant {
   double latitude;
   double longitude;
   String fbUrl;
-  Map<dynamic, Offer> offers;
+  List<Offer> offers;
 
   Merchant({
     this.merchantId,
@@ -42,19 +42,21 @@ class Merchant {
         longitude: json["longitude"].toDouble(),
         fbUrl: json["fb_url"],
         offers: Map.from(json["offers"])
-            .map((k, v) => MapEntry<dynamic, Offer>(k, Offer.fromJson(v))),
+            .map((k, v) => MapEntry<dynamic, Offer>(k, Offer.fromJson(v)))
+            .values
+            .toList(),
       );
-  Map<dynamic, dynamic> toJson() => {
-        "merchant_id": merchantId,
-        "name": name,
-        "category": category,
-        "address": address,
-        "logo_url": logoUrl,
-        "phone_number": phoneNumber,
-        "latitude": latitude,
-        "longitude": longitude,
-        "fb_url": fbUrl,
-        "offers": Map.from(offers)
-            .map((k, v) => MapEntry<dynamic, dynamic>(k, v.toJson())),
-      };
+  // Map<dynamic, dynamic> toJson() => {
+  //       "merchant_id": merchantId,
+  //       "name": name,
+  //       "category": category,
+  //       "address": address,
+  //       "logo_url": logoUrl,
+  //       "phone_number": phoneNumber,
+  //       "latitude": latitude,
+  //       "longitude": longitude,
+  //       "fb_url": fbUrl,
+  //       "offers": Map.from(offers)
+  //           .map((k, v) => MapEntry<dynamic, dynamic>(k, v.toJson())),
+  //     };
 }

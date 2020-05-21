@@ -74,12 +74,14 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
         height: 20,
       ),
       Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
             width: 10,
           ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(30.0),
+            // borderRadius: BorderRadius.circular(30.0),
             child: FittedBox(
               fit: BoxFit.cover,
               child: Image.network(
@@ -169,7 +171,10 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
                       width: 10,
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           )

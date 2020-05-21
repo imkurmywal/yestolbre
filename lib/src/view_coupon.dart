@@ -1,7 +1,12 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 
 class ViewCoupon extends StatelessWidget {
+  Merchant merchant;
+  int index;
+  ViewCoupon({@required this.merchant, @required this.index});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +28,16 @@ class ViewCoupon extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 40,
+                    height: 15,
+                  ),
+                  Text(
+                    "Total: ${merchant.offers[index].totalClaims} Remaining: ${merchant.offers[index].countedClaims}",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
                   ),
                   Text(
                     "Your Promo Code",
@@ -42,7 +56,9 @@ class ViewCoupon extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: Center(
                       child: Text(
-                        "XDFETFASFER",
+                        merchant.offers[index].type == "free"
+                            ? "FREE"
+                            : merchant.offers[index].type,
                         style: TextStyle(
                             fontSize: 26,
                             color: Colors.white,
@@ -54,7 +70,7 @@ class ViewCoupon extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    "Merchant Name",
+                    merchant.name,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.blue[500],
@@ -66,7 +82,7 @@ class ViewCoupon extends StatelessWidget {
                   ),
                   ClipOval(
                     child: Image.network(
-                      "https://www.freelogodesign.org/Content/img/logo-samples/bakary.png",
+                      merchant.logoUrl,
                       height: 140,
                       width: 140,
                       fit: BoxFit.cover,
@@ -106,7 +122,7 @@ class ViewCoupon extends StatelessWidget {
                     height: 50,
                   ),
                   Text(
-                    "20% Discount on breakfast & lunch".toUpperCase(),
+                    merchant.offers[index].title.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 30,

@@ -54,7 +54,7 @@ class _HomeViewState extends State<HomeView> {
       }
 
       for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
-        print(value);
+        // print(value);
         if (mounted) {
           setState(() {
             allMerchants.add(new Merchant.fromJson(value));
@@ -62,7 +62,6 @@ class _HomeViewState extends State<HomeView> {
           // _end_loading();
         }
       }
-      print(allMerchants[0].offers[0]);
     });
   }
 

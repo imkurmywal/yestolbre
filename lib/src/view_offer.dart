@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:yestolbre/src/models/merchnat.dart';
 import 'package:yestolbre/src/view_coupon.dart';
 
 class ViewOffer extends StatelessWidget {
+  Merchant merchant;
+  int index;
+  ViewOffer({@required this.merchant, @required this.index});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,44 +20,51 @@ class ViewOffer extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 200,
               child: FittedBox(
-                child: Image.asset("assets/offer.jpeg"),
+                child: Image.network(
+                  merchant.logoUrl,
+                ),
                 fit: BoxFit.fill,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "20% OFF",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[200]),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "For every purchase of American breakfast",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Merchant Name and Address",
-                  style: TextStyle(
-                    color: Colors.blue[500],
-                    fontSize: 17,
+                  Text(
+                    "20% OFF",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[200]),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    merchant.offers[index].title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "${merchant.name}\n${merchant.address}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blue[500],
+                      fontSize: 17,
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(14, 10, 14, 20),
@@ -73,7 +85,7 @@ class ViewOffer extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec dui augue. Aliquam erat volutpat. Nullam velit massa, euismod vel eros in, mattis faucibus eros. Ut dignissim.",
+                    merchant.offers[index].termsConditions,
                     style: TextStyle(
                       fontSize: 15,
                     ),
@@ -91,7 +103,7 @@ class ViewOffer extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        "Categories, Restaurant",
+                        merchant.category,
                         style: TextStyle(color: Colors.blue[500], fontSize: 16),
                       ),
                     ],
@@ -106,8 +118,13 @@ class ViewOffer extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ViewCoupon()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewCoupon(
+                                merchant: merchant,
+                                index: index,
+                              )));
                 },
                 child: Container(
                   width: 160,

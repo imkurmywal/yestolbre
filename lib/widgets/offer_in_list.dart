@@ -14,7 +14,7 @@ class OfferInList implements ListItem {
   Widget buildOfferInList(BuildContext context) {
     return Container(
       // height: 170,
-      margin: EdgeInsets.fromLTRB(14, 14, 14, 0),
+      margin: EdgeInsets.fromLTRB(10, 14, 10, 0),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +24,7 @@ class OfferInList implements ListItem {
             child: Image.network(
               merchant.logoUrl,
               width: 120,
-              height: 10,
+              height: 100,
             ),
           ),
           SizedBox(
@@ -35,7 +35,7 @@ class OfferInList implements ListItem {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  merchant.offers[index].title,
+                  merchant.offers[index - 1].title,
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
@@ -54,8 +54,13 @@ class OfferInList implements ListItem {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4)),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ViewOffer()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewOffer(
+                                  merchant: merchant,
+                                  index: index - 1,
+                                )));
                   },
                   child: Container(
                     width: 80,
