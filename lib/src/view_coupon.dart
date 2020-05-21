@@ -1,11 +1,58 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
 
-class ViewCoupon extends StatelessWidget {
+class ViewCoupon extends StatefulWidget {
   Merchant merchant;
   int index;
   ViewCoupon({@required this.merchant, @required this.index});
+  @override
+  _ViewCouponState createState() => _ViewCouponState();
+}
+
+class _ViewCouponState extends State<ViewCoupon> {
+  final ref = FirebaseDatabase.instance.reference();
+
+  @override
+  void initState() {
+    super.initState();
+    listenToMerchant();
+    countClaimNow();
+  }
+
+  void countClaimNow() {
+    ref
+        .child(
+            "merchants/${widget.merchant.merchantId}/offers/${widget.merchant.offers[widget.index].offerId}")
+        .update({
+      "counted_claims":
+          "${int.parse(widget.merchant.offers[widget.index].countedClaims) + 1}",
+    });
+  }
+
+  void listenToMerchant() async {
+    ref
+        .child("merchants/${widget.merchant.merchantId}")
+        .onValue
+        .listen((Event event) {
+      if (event.snapshot.value == null) {
+        return;
+      }
+      print("fetched..");
+      setState(() {
+        widget.merchant = Merchant.fromJson(event.snapshot.value);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // ref
+    //     .child("merchants/${widget.merchant.merchantId}")
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +78,7 @@ class ViewCoupon extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    "Total: ${merchant.offers[index].totalClaims} Remaining: ${merchant.offers[index].countedClaims}",
+                    "Total: ${widget.merchant.offers[widget.index].totalClaims} Remaining: ${widget.merchant.offers[widget.index].countedClaims}",
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -56,9 +103,9 @@ class ViewCoupon extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: Center(
                       child: Text(
-                        merchant.offers[index].code == "free"
+                        widget.merchant.offers[widget.index].code == "free"
                             ? "FREE"
-                            : merchant.offers[index].code,
+                            : widget.merchant.offers[widget.index].code,
                         style: TextStyle(
                             fontSize: 26,
                             color: Colors.white,
@@ -70,7 +117,7 @@ class ViewCoupon extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    merchant.name,
+                    widget.merchant.name,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.blue[500],
@@ -82,7 +129,7 @@ class ViewCoupon extends StatelessWidget {
                   ),
                   ClipOval(
                     child: Image.network(
-                      merchant.logoUrl,
+                      widget.merchant.logoUrl,
                       height: 140,
                       width: 140,
                       fit: BoxFit.cover,
@@ -122,7 +169,7 @@ class ViewCoupon extends StatelessWidget {
                     height: 50,
                   ),
                   Text(
-                    merchant.offers[index].title.toUpperCase(),
+                    widget.merchant.offers[widget.index].title.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 30,
