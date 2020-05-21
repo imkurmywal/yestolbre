@@ -56,9 +56,9 @@ class ViewCoupon extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: Center(
                       child: Text(
-                        merchant.offers[index].type == "free"
+                        merchant.offers[index].code == "free"
                             ? "FREE"
-                            : merchant.offers[index].type,
+                            : merchant.offers[index].code,
                         style: TextStyle(
                             fontSize: 26,
                             color: Colors.white,

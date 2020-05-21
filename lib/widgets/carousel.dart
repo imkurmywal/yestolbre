@@ -42,7 +42,7 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
         height: 10,
       ),
       CarouselSlider(
-        items: imageSliders,
+        items: imageSliders(),
         options: CarouselOptions(
             autoPlay: true,
             enlargeCenterPage: true,
@@ -55,8 +55,8 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: imgList.map((url) {
-          int index = imgList.indexOf(url);
+        children: widget.merchant.carousel.map((url) {
+          int index = widget.merchant.carousel.indexOf(url);
           return Container(
             width: 8.0,
             height: 8.0,
@@ -182,13 +182,16 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
       )
     ]);
   }
-}
 
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          child: Container(
-            // margin: EdgeInsets.all(5.0),
-            child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
-          ),
-        ))
-    .toList();
+  List<Widget> imageSliders() {
+    final List<Widget> imageSliders = widget.merchant.carousel
+        .map((item) => Container(
+              child: Container(
+                // margin: EdgeInsets.all(5.0),
+                child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
+              ),
+            ))
+        .toList();
+    return imageSliders;
+  }
+}

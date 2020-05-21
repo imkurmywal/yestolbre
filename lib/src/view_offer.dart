@@ -21,7 +21,7 @@ class ViewOffer extends StatelessWidget {
               height: 200,
               child: FittedBox(
                 child: Image.network(
-                  merchant.logoUrl,
+                  merchant.offers[index].imageUrl,
                 ),
                 fit: BoxFit.fill,
               ),
@@ -35,7 +35,7 @@ class ViewOffer extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "20% OFF",
+                    "${merchant.offers[index].offPercent} OFF",
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,

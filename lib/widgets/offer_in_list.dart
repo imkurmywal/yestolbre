@@ -16,13 +16,13 @@ class OfferInList implements ListItem {
       // height: 170,
       margin: EdgeInsets.fromLTRB(10, 14, 10, 0),
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           FittedBox(
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
             child: Image.network(
-              merchant.logoUrl,
+              merchant.offers[index - 1].imageUrl,
               width: 120,
               height: 100,
             ),
@@ -36,15 +36,15 @@ class OfferInList implements ListItem {
               children: <Widget>[
                 Text(
                   merchant.offers[index - 1].title,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 17),
                 ),
                 SizedBox(
                   height: 5,
                 ),
-                // Text(
-                //   "5% OFF",
-                //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                // ),
+                Text(
+                  "${merchant.offers[index - 1].offPercent} OFF",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
                   height: 5,
                 ),

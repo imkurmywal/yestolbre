@@ -16,6 +16,7 @@ class Merchant {
   double latitude;
   double longitude;
   String fbUrl;
+  List<dynamic> carousel;
   List<Offer> offers;
 
   Merchant({
@@ -28,6 +29,7 @@ class Merchant {
     this.latitude,
     this.longitude,
     this.fbUrl,
+    this.carousel,
     this.offers,
   });
 
@@ -41,6 +43,7 @@ class Merchant {
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
         fbUrl: json["fb_url"],
+        carousel: json["carousel"],
         offers: Map.from(json["offers"])
             .map((k, v) => MapEntry<dynamic, Offer>(k, Offer.fromJson(v)))
             .values

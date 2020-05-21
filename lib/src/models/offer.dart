@@ -2,7 +2,7 @@ import 'dart:convert';
 
 Offer offerFromJson(String str) => Offer.fromJson(json.decode(str));
 
-String offerToJson(Offer data) => json.encode(data.toJson());
+// String offerToJson(Offer data) => json.encode(data.toJson());
 
 List<Offer> parsePhotos(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
@@ -13,7 +13,9 @@ List<Offer> parsePhotos(String responseBody) {
 class Offer {
   String offerId;
   String title;
-  String type;
+  String code;
+  String offPercent;
+  String imageUrl;
   String totalClaims;
   String countedClaims;
   String termsConditions;
@@ -21,7 +23,9 @@ class Offer {
   Offer({
     this.offerId,
     this.title,
-    this.type,
+    this.code,
+    this.offPercent,
+    this.imageUrl,
     this.totalClaims,
     this.countedClaims,
     this.termsConditions,
@@ -30,18 +34,20 @@ class Offer {
   factory Offer.fromJson(Map<dynamic, dynamic> json) => Offer(
         offerId: json["offer_id"],
         title: json["title"],
-        type: json["type"],
+        code: json["promo_code"],
+        offPercent: json["off_discount"],
+        imageUrl: json["image_url"],
         totalClaims: json["total_claims"],
         countedClaims: json["counted_claims"],
         termsConditions: json["terms_conditions"],
       );
 
-  Map<dynamic, dynamic> toJson() => {
-        "offer_id": offerId,
-        "title": title,
-        "type": type,
-        "total_claims": totalClaims,
-        "counted_claims": countedClaims,
-        "terms_conditions": termsConditions,
-      };
+  // Map<dynamic, dynamic> toJson() => {
+  //       "offer_id": offerId,
+  //       "title": title,
+  //       "type": type,
+  //       "total_claims": totalClaims,
+  //       "counted_claims": countedClaims,
+  //       "terms_conditions": termsConditions,
+  //     };
 }

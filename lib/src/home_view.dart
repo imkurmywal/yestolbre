@@ -62,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
           // _end_loading();
         }
       }
+      print(allMerchants[0].carousel[0]);
     });
   }
 
