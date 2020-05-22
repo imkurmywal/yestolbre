@@ -1,8 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/map_view.dart';
+import 'package:yestolbre/src/merchnat_view.dart';
 import 'package:yestolbre/src/models/category.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'dart:async';
 
 class HomeView extends StatefulWidget {
   @override
@@ -12,6 +16,14 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final ref = FirebaseDatabase.instance.reference();
   List<Merchant> allMerchants = new List<Merchant>();
+  List<Merchant> filteredMerchants = new List<Merchant>();
+  var _location = new Location();
+  final Map<String, Marker> _markers = {};
+  Completer<GoogleMapController> _controller = Completer();
+  BitmapDescriptor pin;
+
+  LatLng myLocation;
+
   int _selectedIndex = 0;
   List<Category> categories = [
     Category(
@@ -39,9 +51,42 @@ class _HomeViewState extends State<HomeView> {
       index: 5,
     ),
   ];
-  void _itemTapped(index) {
-    setState(() {
-      _selectedIndex = index;
+
+  void _setMarker() {
+    _markers.clear();
+    for (Merchant merchant in filteredMerchants) {
+      final marker = Marker(
+          markerId: MarkerId(merchant.merchantId),
+          position: LatLng(merchant.latitude, merchant.longitude),
+          icon: pin,
+          // infoWindow: InfoWindow(title: "Its me"),
+          onTap: () {
+            print("its clicked.");
+            showBottomSheet(merchant);
+          });
+      _markers[merchant.merchantId] = marker;
+    }
+  }
+
+  void setPin() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(50, 56)), 'assets/pin.png')
+        .then((onValue) {
+      pin = onValue;
+    });
+  }
+
+  void _locationServices() {
+    _location.requestPermission();
+    _location.changeSettings(
+        accuracy: LocationAccuracy.HIGH, distanceFilter: 150);
+
+    _location.onLocationChanged().listen((LocationData currentLocation) {
+      setState(() {
+        myLocation =
+            LatLng(currentLocation.latitude, currentLocation.longitude);
+        _setMarker();
+      });
     });
   }
 
@@ -49,32 +94,37 @@ class _HomeViewState extends State<HomeView> {
     ref.child("merchants").onValue.listen((Event event) {
       allMerchants.clear();
       if (event.snapshot.value == null) {
-        // _end_loading();
         return;
       }
 
       for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
-        // print(value);
-        if (mounted) {
-          setState(() {
-            allMerchants.add(new Merchant.fromJson(value));
-          });
-          // _end_loading();
-        }
+        allMerchants.add(new Merchant.fromJson(value));
+        filterCategory(category: categories[_selectedIndex].title);
       }
-      print(allMerchants[0].carousel[0]);
+      setState(() {
+        _setMarker();
+      });
     });
+  }
+
+  filterCategory({String category}) {
+    filteredMerchants = allMerchants
+        .where((merchant) => merchant.category == category)
+        .toList();
   }
 
   @override
   void initState() {
     super.initState();
+    setPin();
+    _locationServices();
     getList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: true,
         appBar: AppBar(
           title: Container(
             margin: EdgeInsets.fromLTRB(14, 10, 14, 10),
@@ -91,8 +141,13 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 Expanded(
                   child: TextField(
+                    textInputAction: TextInputAction.search,
                     decoration: InputDecoration(
-                        hintText: "Search", border: InputBorder.none),
+                        hintText: "Search keyword ${filteredMerchants.length}",
+                        border: InputBorder.none),
+                    onSubmitted: (keyword) {
+                      print(keyword);
+                    },
                   ),
                 )
               ],
@@ -107,8 +162,23 @@ class _HomeViewState extends State<HomeView> {
                 top: 0,
                 right: 0,
                 bottom: 73,
-                child: MapView(
-                  merchants: allMerchants,
+                child: Container(
+                  child: myLocation == null
+                      ? Center(
+                          child: Text("Map is loading"),
+                        )
+                      : GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: myLocation,
+                            zoom: 13,
+                          ),
+                          markers: _markers.values.toSet(),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                          myLocationEnabled: true,
+                        ),
                 ),
               ),
               Positioned(
@@ -128,6 +198,9 @@ class _HomeViewState extends State<HomeView> {
                           onTap: () {
                             setState(() {
                               _selectedIndex = index;
+                              filterCategory(
+                                  category: categories[_selectedIndex].title);
+                              _setMarker();
                             });
                           },
                           child: Container(
@@ -189,5 +262,124 @@ class _HomeViewState extends State<HomeView> {
         //   ],
         // ),
         );
+  }
+
+  void showBottomSheet(Merchant merchant) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext ctx) {
+          return Container(
+            child: SafeArea(
+              child: Wrap(
+                // alignment: WrapAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(20),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30.0),
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: Image.network(
+                                  merchant.logoUrl,
+                                  width: 80,
+                                  height: 80,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    merchant.name,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    merchant.address,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Category",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        merchant.category,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Center(
+                          child: RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MerchantView(
+                                            merchant: merchant,
+                                          )));
+                            },
+                            child: Container(
+                              width: 160,
+                              height: 30,
+                              child: Center(
+                                child: Text(
+                                  "View Offers",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
+                              // padding: EdgeInsets.all(2),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

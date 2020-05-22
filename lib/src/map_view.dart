@@ -78,7 +78,7 @@ class _MapViewState extends State<MapView> {
               mapType: MapType.normal,
               initialCameraPosition: CameraPosition(
                 target: myLocation,
-                zoom: 12,
+                zoom: 13,
               ),
               markers: _markers.values.toSet(),
               onMapCreated: (GoogleMapController controller) {
