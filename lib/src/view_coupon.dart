@@ -17,41 +17,6 @@ class _ViewCouponState extends State<ViewCoupon> {
   @override
   void initState() {
     super.initState();
-    listenToMerchant();
-    countClaimNow();
-  }
-
-  void countClaimNow() {
-    ref
-        .child(
-            "merchants/${widget.merchant.merchantId}/offers/${widget.merchant.offers[widget.index].offerId}")
-        .update({
-      "counted_claims":
-          "${int.parse(widget.merchant.offers[widget.index].countedClaims) + 1}",
-    });
-  }
-
-  void listenToMerchant() async {
-    ref
-        .child("merchants/${widget.merchant.merchantId}")
-        .onValue
-        .listen((Event event) {
-      if (event.snapshot.value == null) {
-        return;
-      }
-      print("fetched..");
-      setState(() {
-        widget.merchant = Merchant.fromJson(event.snapshot.value);
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    // ref
-    //     .child("merchants/${widget.merchant.merchantId}")
   }
 
   @override
@@ -75,17 +40,17 @@ class _ViewCouponState extends State<ViewCoupon> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 15,
+                    height: 30,
                   ),
-                  Text(
-                    "Total: ${widget.merchant.offers[widget.index].totalClaims} Remaining: ${widget.merchant.offers[widget.index].countedClaims}",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
+                  // Text(
+                  //   "Total: ${widget.merchant.offers[widget.index].totalClaims} Remaining: ${widget.merchant.offers[widget.index].countedClaims}",
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 15,
+                  // ),
                   Text(
                     "Your Promo Code",
                     style: TextStyle(

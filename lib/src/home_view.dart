@@ -118,7 +118,7 @@ class _HomeViewState extends State<HomeView> {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   height: 73,
-                  color: Colors.blue[500],
+                  color: Color(0xff5ed4f0),
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,

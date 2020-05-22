@@ -1,11 +1,47 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
 import 'package:yestolbre/src/view_coupon.dart';
 
-class ViewOffer extends StatelessWidget {
+class ViewOffer extends StatefulWidget {
   Merchant merchant;
   int index;
   ViewOffer({@required this.merchant, @required this.index});
+  @override
+  _ViewOfferState createState() => _ViewOfferState();
+}
+
+class _ViewOfferState extends State<ViewOffer> {
+  final ref = FirebaseDatabase.instance.reference();
+  @override
+  void initState() {
+    super.initState();
+    listenToMerchant();
+  }
+
+  void countClaimNow() {
+    ref
+        .child(
+            "merchants/${widget.merchant.merchantId}/offers/${widget.merchant.offers[widget.index].offerId}")
+        .update({
+      "counted_claims":
+          "${int.parse(widget.merchant.offers[widget.index].countedClaims) + 1}",
+    });
+  }
+
+  void listenToMerchant() async {
+    ref
+        .child("merchants/${widget.merchant.merchantId}")
+        .onValue
+        .listen((Event event) {
+      if (event.snapshot.value == null) {
+        return;
+      }
+      setState(() {
+        widget.merchant = Merchant.fromJson(event.snapshot.value);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +57,7 @@ class ViewOffer extends StatelessWidget {
               height: 200,
               child: FittedBox(
                 child: Image.network(
-                  merchant.offers[index].imageUrl,
+                  widget.merchant.offers[widget.index].imageUrl,
                 ),
                 fit: BoxFit.fill,
               ),
@@ -35,7 +71,7 @@ class ViewOffer extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "${merchant.offers[index].offPercent} OFF",
+                    "${widget.merchant.offers[widget.index].offPercent} OFF",
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -45,7 +81,7 @@ class ViewOffer extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    merchant.offers[index].title,
+                    widget.merchant.offers[widget.index].title,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -56,7 +92,7 @@ class ViewOffer extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    "${merchant.name}\n${merchant.address}",
+                    "${widget.merchant.name}\n${widget.merchant.address}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.blue[500],
@@ -85,7 +121,7 @@ class ViewOffer extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    merchant.offers[index].termsConditions,
+                    widget.merchant.offers[widget.index].termsConditions,
                     style: TextStyle(
                       fontSize: 15,
                     ),
@@ -103,11 +139,33 @@ class ViewOffer extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        merchant.category,
+                        widget.merchant.category,
                         style: TextStyle(color: Colors.blue[500], fontSize: 16),
                       ),
                     ],
-                  )
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "total claimed coupons".toUpperCase(),
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.merchant.offers[widget.index].countedClaims,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                 ],
               ),
             ),
@@ -118,12 +176,13 @@ class ViewOffer extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 onPressed: () {
+                  countClaimNow();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ViewCoupon(
-                                merchant: merchant,
-                                index: index,
+                                merchant: widget.merchant,
+                                index: widget.index,
                               )));
                 },
                 child: Container(

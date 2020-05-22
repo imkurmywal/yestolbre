@@ -16,7 +16,7 @@ class Offer {
   String code;
   String offPercent;
   String imageUrl;
-  String totalClaims;
+  // String totalClaims;
   String countedClaims;
   String termsConditions;
 
@@ -26,7 +26,7 @@ class Offer {
     this.code,
     this.offPercent,
     this.imageUrl,
-    this.totalClaims,
+    // this.totalClaims,
     this.countedClaims,
     this.termsConditions,
   });
@@ -37,7 +37,7 @@ class Offer {
         code: json["promo_code"],
         offPercent: json["off_discount"],
         imageUrl: json["image_url"],
-        totalClaims: json["total_claims"],
+        // totalClaims: json["total_claims"],
         countedClaims: json["counted_claims"],
         termsConditions: json["terms_conditions"],
       );
