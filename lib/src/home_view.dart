@@ -113,6 +113,17 @@ class _HomeViewState extends State<HomeView> {
         .toList();
   }
 
+  filterByKeyword({String keyword}) {
+    filteredMerchants.clear();
+    allMerchants.forEach((merchant) {
+      merchant.offers.forEach((offer) {
+        if (offer.title.toLowerCase().contains(keyword.toLowerCase())) {
+          filteredMerchants.add(merchant);
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -146,7 +157,10 @@ class _HomeViewState extends State<HomeView> {
                         hintText: "Search keyword ${filteredMerchants.length}",
                         border: InputBorder.none),
                     onSubmitted: (keyword) {
-                      print(keyword);
+                      setState(() {
+                        filterByKeyword(keyword: keyword);
+                        _setMarker();
+                      });
                     },
                   ),
                 )
@@ -236,32 +250,7 @@ class _HomeViewState extends State<HomeView> {
               )
             ],
           ),
-        )
-        // bottomNavigationBar: BottomNavigationBar(
-        //   type: BottomNavigationBarType.fixed,
-        //   selectedItemColor: Theme.of(context).primaryColor,
-        //   onTap: _itemTapped,
-        //   currentIndex: _selectedIndex,
-        //   items: const <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.fastfood),
-        //       title: Text('Food'),
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.hotel),
-        //       title: Text('Hotels'),
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.event),
-        //       title: Text("Events"),
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.help_outline),
-        //       title: Text("Services"),
-        //     ),
-        //   ],
-        // ),
-        );
+        ));
   }
 
   void showBottomSheet(Merchant merchant) {
