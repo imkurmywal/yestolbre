@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
 
@@ -156,7 +157,9 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
                           color: Theme.of(context).primaryColor, // button color
                           child: InkWell(
                             splashColor: Colors.grey, // splash color
-                            onTap: () {}, // button pressed
+                            onTap: () {
+                              launch("tel:+${widget.merchant.phoneNumber}");
+                            }, // button pressed
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
