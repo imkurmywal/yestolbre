@@ -33,7 +33,7 @@ class _MerchantViewState extends State<MerchantView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Offers"),
+        title: Text("Partner Details"),
       ),
       body: ListView.builder(
           itemCount: list.length,

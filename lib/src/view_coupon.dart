@@ -40,7 +40,7 @@ class _ViewCouponState extends State<ViewCoupon> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   // Text(
                   //   "Total: ${widget.merchant.offers[widget.index].totalClaims} Remaining: ${widget.merchant.offers[widget.index].countedClaims}",
@@ -104,7 +104,7 @@ class _ViewCouponState extends State<ViewCoupon> {
                     height: 20,
                   ),
                   Text(
-                    "Present this promo code at the counter at any of partner brand to avail a discount or a freebie",
+                    "Present this eCoupon at the counter or use the promo CODE on your online transactions to avail a Freebie or a Discount.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -131,13 +131,13 @@ class _ViewCouponState extends State<ViewCoupon> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
                   Text(
                     widget.merchant.offers[widget.index].title.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: 30,
+                      fontSize: 26,
                     ),
                     textAlign: TextAlign.center,
                   ),

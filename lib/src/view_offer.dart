@@ -71,7 +71,7 @@ class _ViewOfferState extends State<ViewOffer> {
                     height: 10,
                   ),
                   Text(
-                    "${widget.merchant.offers[widget.index].offPercent} OFF",
+                    "${widget.merchant.offers[widget.index].type == "free" ? "FREE" : widget.merchant.offers[widget.index].offPercent + " OFF"}",
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,

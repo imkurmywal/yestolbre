@@ -42,7 +42,7 @@ class OfferInList implements ListItem {
                   height: 5,
                 ),
                 Text(
-                  "${merchant.offers[index - 1].offPercent} OFF",
+                  "${merchant.offers[index - 1].type == "free" ? "FREE" : merchant.offers[index - 1].offPercent + " OFF"}",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(

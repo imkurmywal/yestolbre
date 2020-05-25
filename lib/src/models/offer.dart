@@ -14,6 +14,7 @@ class Offer {
   String offerId;
   String title;
   String code;
+  String type;
   String offPercent;
   String imageUrl;
   // String totalClaims;
@@ -24,6 +25,7 @@ class Offer {
     this.offerId,
     this.title,
     this.code,
+    this.type,
     this.offPercent,
     this.imageUrl,
     // this.totalClaims,
@@ -34,6 +36,7 @@ class Offer {
   factory Offer.fromJson(Map<dynamic, dynamic> json) => Offer(
         offerId: json["offer_id"],
         title: json["title"],
+        type: json["type"],
         code: json["promo_code"],
         offPercent: json["off_discount"],
         imageUrl: json["image_url"],

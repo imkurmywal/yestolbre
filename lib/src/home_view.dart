@@ -98,6 +98,7 @@ class _HomeViewState extends State<HomeView> {
       }
 
       for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
+        print("feteched..");
         allMerchants.add(new Merchant.fromJson(value));
         filterCategory(category: categories[_selectedIndex].title);
       }
@@ -109,8 +110,12 @@ class _HomeViewState extends State<HomeView> {
 
   filterCategory({String category}) {
     filteredMerchants = allMerchants
-        .where((merchant) => merchant.category == category)
+        .where((merchant) => merchant.category
+            .toLowerCase()
+            .split(",")
+            .contains(category.toLowerCase()))
         .toList();
+    print(filteredMerchants.length);
   }
 
   filterByKeyword({String keyword}) {
@@ -185,7 +190,7 @@ class _HomeViewState extends State<HomeView> {
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
                             target: myLocation,
-                            zoom: 13,
+                            zoom: 10,
                           ),
                           markers: _markers.values.toSet(),
                           onMapCreated: (GoogleMapController controller) {
