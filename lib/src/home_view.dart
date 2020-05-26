@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   var _location = new Location();
   final Map<String, Marker> _markers = {};
   Completer<GoogleMapController> _controller = Completer();
-  BitmapDescriptor pin;
+  BitmapDescriptor  pin;
 
   LatLng myLocation;
 
@@ -55,13 +55,6 @@ class _HomeViewState extends State<HomeView> {
       index: 5,
     ),
   ];
-  String _debugLabelString = "";
-  String _emailAddress;
-  String _externalUserId;
-  bool _enableConsentButton = false;
-
-  // CHANGE THIS parameter to true if you want to test GDPR privacy consent
-  bool _requireConsent = true;
 
   void _setMarker() {
     _markers.clear();
@@ -87,12 +80,8 @@ class _HomeViewState extends State<HomeView> {
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
   }
   void setPin() async {
-//    pin = await getBytesFromAsset('assets/pin.png', 70);
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(50, 50)), 'assets/pin.png')
-        .then((onValue) {
-      pin = onValue;
-    });
+    final Uint8List pin2 = await getBytesFromAsset('assets/pin.png', 70);
+    pin = BitmapDescriptor.fromBytes(pin2);
   }
 
   void _locationServices() {
