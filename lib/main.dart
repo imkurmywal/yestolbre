@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/home_view.dart';
-import 'package:yestolbre/src/view_coupon.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  return runApp(MyApp());
+}
+
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

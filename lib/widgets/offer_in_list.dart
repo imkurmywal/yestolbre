@@ -19,12 +19,14 @@ class OfferInList implements ListItem {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          FittedBox(
-            fit: BoxFit.fill,
-            child: Image.network(
-              merchant.offers[index - 1].imageUrl,
-              width: 120,
-              height: 100,
+          Container(
+            width: 120,
+            height: 105,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: NetworkImage(merchant.offers[index - 1].imageUrl),
+              ),
             ),
           ),
           SizedBox(
