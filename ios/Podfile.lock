@@ -101,8 +101,6 @@ PODS:
   - PromisesObjC (1.2.8)
   - url_launcher (0.0.1):
     - Flutter
-  - url_launcher_web (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -115,7 +113,6 @@ DEPENDENCIES:
   - OneSignal (< 3.0, >= 2.9.3)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
   trunk:
@@ -156,8 +153,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
-  url_launcher_web:
-    :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
   Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
@@ -186,8 +181,7 @@ SPEC CHECKSUMS:
   onesignal_flutter: fc5794fdcfdbd3f17426cb63c78281a3f51c85ff
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
-  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
-PODFILE CHECKSUM: fe9517508a654d156fca7ecf7577f17812e48bbe
+PODFILE CHECKSUM: 26b5b24a08a52779c045f6c5bffd961b22d944b9
 
 COCOAPODS: 1.9.1
