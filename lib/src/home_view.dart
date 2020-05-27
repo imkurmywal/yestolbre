@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'dart:async';
 import 'dart:ui' as ui;
+
 class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -24,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
   var _location = new Location();
   final Map<String, Marker> _markers = {};
   Completer<GoogleMapController> _controller = Completer();
-  BitmapDescriptor  pin;
+  BitmapDescriptor pin;
 
   LatLng myLocation;
 
@@ -72,13 +73,16 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
+
   void setPin() async {
     final Uint8List pin2 = await getBytesFromAsset('assets/pin.png', 70);
     pin = BitmapDescriptor.fromBytes(pin2);
@@ -125,6 +129,8 @@ class _HomeViewState extends State<HomeView> {
             .contains(category.toLowerCase()))
         .toList();
     print(filteredMerchants.length);
+    print(filteredMerchants[0].latitude);
+    print(filteredMerchants[0].longitude);
   }
 
   filterByKeyword({String keyword}) {
@@ -146,25 +152,23 @@ class _HomeViewState extends State<HomeView> {
     _locationServices();
     getList();
   }
-  initPlatformState()  async{
+
+  initPlatformState() async {
 //   3f350164-e29d-4e1d-81ac-5862587446f5
 
-      //Remove this method to stop OneSignal Debugging
-      OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+    //Remove this method to stop OneSignal Debugging
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-      OneSignal.shared.init(
-          "3f350164-e29d-4e1d-81ac-5862587446f5",
-          iOSSettings: {
-            OSiOSSettings.autoPrompt: true,
-            OSiOSSettings.inAppLaunchUrl: false
-          }
-      );
-      OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+    OneSignal.shared.init("3f350164-e29d-4e1d-81ac-5862587446f5", iOSSettings: {
+      OSiOSSettings.autoPrompt: true,
+      OSiOSSettings.inAppLaunchUrl: false
+    });
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
 // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-      await OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
-
-
+    await OneSignal.shared
+        .promptUserForPushNotificationPermission(fallbackToSettings: true);
   }
 
   @override
@@ -189,8 +193,7 @@ class _HomeViewState extends State<HomeView> {
                   child: TextField(
                     textInputAction: TextInputAction.search,
                     decoration: InputDecoration(
-                        hintText: "Search keyword",
-                        border: InputBorder.none),
+                        hintText: "Search keyword", border: InputBorder.none),
                     onSubmitted: (keyword) {
                       setState(() {
                         filterByKeyword(keyword: keyword);

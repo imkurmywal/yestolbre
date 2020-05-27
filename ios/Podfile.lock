@@ -94,10 +94,12 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - OneSignal (2.13.1)
+  - onesignal_flutter (2.4.1):
+    - Flutter
+    - OneSignal (= 2.13.1)
   - PromisesObjC (1.2.8)
   - url_launcher (0.0.1):
-    - Flutter
-  - url_launcher_macos (0.0.1):
     - Flutter
   - url_launcher_web (0.0.1):
     - Flutter
@@ -110,8 +112,9 @@ DEPENDENCIES:
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - location (from `.symlinks/plugins/location/ios`)
+  - OneSignal (< 3.0, >= 2.9.3)
+  - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
@@ -131,6 +134,7 @@ SPEC REPOS:
     - GoogleUtilities
     - leveldb-library
     - nanopb
+    - OneSignal
     - PromisesObjC
 
 EXTERNAL SOURCES:
@@ -148,10 +152,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
+  onesignal_flutter:
+    :path: ".symlinks/plugins/onesignal_flutter/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
-  url_launcher_macos:
-    :path: ".symlinks/plugins/url_launcher_macos/ios"
   url_launcher_web:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
@@ -178,11 +182,12 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  OneSignal: fa98eaa90372bb367b6a4a1c1622ffb9832c7600
+  onesignal_flutter: fc5794fdcfdbd3f17426cb63c78281a3f51c85ff
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
-  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
+  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
-PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+PODFILE CHECKSUM: fe9517508a654d156fca7ecf7577f17812e48bbe
 
 COCOAPODS: 1.9.1
