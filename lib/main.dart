@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yestolbre/splash.dart';
 import 'package:yestolbre/src/home_view.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xffFF5C27),
       ),
-      home: HomeView(),
+      home: SplashScreen(),
     );
   }
 }
