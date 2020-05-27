@@ -4,14 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:yestolbre/src/map_view.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
 import 'package:yestolbre/src/models/category.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'dart:async';
-import 'dart:ui' as ui;
 
 class HomeView extends StatefulWidget {
   @override
@@ -66,7 +64,6 @@ class _HomeViewState extends State<HomeView> {
           icon: BitmapDescriptor.fromAsset('assets/pin.png'),
           // infoWindow: InfoWindow(title: "Its me"),
           onTap: () {
-            print("its clicked.");
             showBottomSheet(merchant);
           });
       _markers[merchant.merchantId] = marker;
@@ -89,7 +86,6 @@ class _HomeViewState extends State<HomeView> {
 
   void getList() async {
     ref.child("merchants").onValue.listen((Event event) {
-      print(event.snapshot);
       allMerchants.clear();
       if (event.snapshot.value == null) {
         return;
@@ -113,17 +109,16 @@ class _HomeViewState extends State<HomeView> {
             .split(",")
             .contains(category.toLowerCase()))
         .toList();
-    print(filteredMerchants.length);
-    print(filteredMerchants[0].latitude);
-    print(filteredMerchants[0].longitude);
   }
 
   filterByKeyword({String keyword}) {
+    String keywd = keyword.toLowerCase();
     filteredMerchants.clear();
     allMerchants.forEach((merchant) {
       merchant.offers.forEach((offer) {
-        if (offer.title.toLowerCase().contains(keyword.toLowerCase()) ||
-            merchant.name.contains(keyword)) {
+        if (offer.title.toLowerCase().contains(keywd) ||
+            merchant.name.toLowerCase().contains(keywd) ||
+            merchant.address.toLowerCase().contains(keywd)) {
           filteredMerchants.add(merchant);
         }
       });
