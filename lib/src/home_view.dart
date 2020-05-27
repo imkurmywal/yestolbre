@@ -73,21 +73,6 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        .buffer
-        .asUint8List();
-  }
-
-  void setPin() async {
-    final Uint8List pin2 = await getBytesFromAsset('assets/pin.png', 100);
-    pin = BitmapDescriptor.fromBytes(pin2);
-  }
-
   void _locationServices() {
     _location.requestPermission();
     _location.changeSettings(
@@ -137,7 +122,8 @@ class _HomeViewState extends State<HomeView> {
     filteredMerchants.clear();
     allMerchants.forEach((merchant) {
       merchant.offers.forEach((offer) {
-        if (offer.title.toLowerCase().contains(keyword.toLowerCase())) {
+        if (offer.title.toLowerCase().contains(keyword.toLowerCase()) ||
+            merchant.name.contains(keyword)) {
           filteredMerchants.add(merchant);
         }
       });
@@ -148,25 +134,17 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     initPlatformState();
-    setPin();
     _locationServices();
     getList();
   }
 
   initPlatformState() async {
-//   3f350164-e29d-4e1d-81ac-5862587446f5
-
-    //Remove this method to stop OneSignal Debugging
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
     OneSignal.shared.init("3f350164-e29d-4e1d-81ac-5862587446f5", iOSSettings: {
       OSiOSSettings.autoPrompt: true,
       OSiOSSettings.inAppLaunchUrl: false
     });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
   }
