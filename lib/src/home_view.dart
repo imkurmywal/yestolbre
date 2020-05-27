@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
       final marker = Marker(
           markerId: MarkerId(merchant.merchantId),
           position: LatLng(merchant.latitude, merchant.longitude),
-          icon: pin,
+          icon: BitmapDescriptor.fromAsset('assets/pin.png'),
           // infoWindow: InfoWindow(title: "Its me"),
           onTap: () {
             print("its clicked.");
@@ -84,7 +84,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void setPin() async {
-    final Uint8List pin2 = await getBytesFromAsset('assets/pin.png', 70);
+    final Uint8List pin2 = await getBytesFromAsset('assets/pin.png', 100);
     pin = BitmapDescriptor.fromBytes(pin2);
   }
 
