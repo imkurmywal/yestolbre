@@ -10,7 +10,7 @@
         android:label="YesToLibre"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC7aO2ri5wsZEBhI3iqm70A1-m7vTYmehg"/>
+            android:value="AIzaSyDsATY0_r1BFx0AnGnQ34JJ7n5Zz3YljrY"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

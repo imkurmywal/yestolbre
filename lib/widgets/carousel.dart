@@ -127,53 +127,111 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
                   ],
                 ),
                 SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Spacer(),
-                    Text(
-                      "Call Now",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox.fromSize(
-                      size: Size(40, 40), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Theme.of(context).primaryColor, // button color
-                          child: InkWell(
-                            splashColor: Colors.grey, // splash color
-                            onTap: () {
-                              launch("tel:+${widget.merchant.phoneNumber}");
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.call, color: Colors.white), // icon
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                  ],
-                ),
-                SizedBox(
                   height: 20,
                 ),
               ],
             ),
           )
         ],
-      )
+      ),
+      // Row(
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: <Widget>[
+      //     Spacer(),
+      //     Text(
+      //       "Call Now",
+      //       style: TextStyle(fontSize: 17),
+      //     ),
+      //     SizedBox(
+      //       width: 10,
+      //     ),
+      //     SizedBox.fromSize(
+      //       size: Size(40, 40), // button width and height
+      //       child: ClipOval(
+      //         child: Material(
+      //           color: Theme.of(context).primaryColor, // button color
+      //           child: InkWell(
+      //             splashColor: Colors.grey, // splash color
+      //             onTap: () {
+      //               launch("tel:+${widget.merchant.phoneNumber}");
+      //             }, // button pressed
+      //             child: Column(
+      //               mainAxisAlignment: MainAxisAlignment.center,
+      //               children: <Widget>[
+      //                 Icon(Icons.call, color: Colors.white), // icon
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     SizedBox(
+      //       width: 10,
+      //     ),
+      //   ],
+      // ),
+
+      SizedBox(
+        height: 10,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ButtonTheme(
+            minWidth: 26,
+            child: RaisedButton(
+              color: Color(0xff49934D),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3)),
+              onPressed: () async {
+                if (await canLaunch(widget.merchant.fbUrl)) {
+                  launch(widget.merchant.fbUrl);
+                }
+              },
+              child: Container(
+                width: 105,
+                height: 40,
+                child: Center(
+                  child: Text(
+                    "VISIT PAGE",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          ButtonTheme(
+            minWidth: 26,
+            child: RaisedButton(
+              color: Color(0xff49934D),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3)),
+              onPressed: () {
+                launch("tel:+${widget.merchant.phoneNumber}");
+              },
+              child: Container(
+                width: 105,
+                height: 40,
+                child: Center(
+                  child: Text(
+                    "CALL",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 10),
     ]);
   }
 

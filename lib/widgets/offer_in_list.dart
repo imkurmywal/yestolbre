@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
-import 'package:yestolbre/src/view_coupon.dart';
 import 'package:yestolbre/src/view_offer.dart';
-import 'package:yestolbre/widgets/carousel.dart';
 
 class OfferInList implements ListItem {
   Merchant merchant;
@@ -34,21 +32,21 @@ class OfferInList implements ListItem {
           ),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   merchant.offers[index - 1].title,
-                  style: TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 3,
                 ),
                 Text(
                   "${merchant.offers[index - 1].type == "free" ? "FREE" : merchant.offers[index - 1].offPercent + " OFF"}",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 3,
                 ),
                 RaisedButton(
                   color: Theme.of(context).primaryColor,
