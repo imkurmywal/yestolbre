@@ -191,15 +191,15 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
                 }
               },
               child: Container(
-                width: 100,
+                width: 105,
                 height: 40,
                 child: Center(
                   child: Text(
                     "VISIT PAGE",
-                    style: TextStyle(fontSize: 17),
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
               ),
             ),
           ),
@@ -217,15 +217,15 @@ class _CarouselWithIndicatorState extends State<MyCarousel> {
                 launch("tel:+${widget.merchant.phoneNumber}");
               },
               child: Container(
-                width: 100,
+                width: 105,
                 height: 40,
                 child: Center(
                   child: Text(
-                    "CALL NOW",
-                    style: TextStyle(fontSize: 17),
+                    "CALL",
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
               ),
             ),
           ),

@@ -4,12 +4,15 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:yestolbre/src/Firebase/merchant_firebase.dart';
+import 'package:yestolbre/src/all_partners_view.dart';
 import 'package:yestolbre/src/merchnat_view.dart';
 import 'package:yestolbre/src/models/category.dart';
 import 'package:yestolbre/src/models/merchnat.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'dart:async';
+import 'package:flutter/services.dart' show rootBundle;
 
 class HomeView extends StatefulWidget {
   @override
@@ -26,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
   BitmapDescriptor pin;
 
   LatLng myLocation;
-
+  String _mapStyle;
   int _selectedIndex = 0;
   List<Category> categories = [
     Category(
@@ -85,17 +88,9 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void getList() async {
-    ref.child("merchants").onValue.listen((Event event) {
-      allMerchants.clear();
-      if (event.snapshot.value == null) {
-        return;
-      }
-
-      for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
-        print("feteched..");
-        allMerchants.add(new Merchant.fromJson(value));
-        filterCategory(category: categories[_selectedIndex].title);
-      }
+    MerchantDB.shared.getMerchants(fetched: (List<Merchant> merchants) {
+      allMerchants = merchants;
+      filterCategory(category: categories[_selectedIndex].title);
       setState(() {
         _setMarker();
       });
@@ -131,6 +126,9 @@ class _HomeViewState extends State<HomeView> {
     initPlatformState();
     _locationServices();
     getList();
+    rootBundle.loadString('assets/style.txt').then((string) {
+      _mapStyle = string;
+    });
   }
 
   initPlatformState() async {
@@ -188,23 +186,43 @@ class _HomeViewState extends State<HomeView> {
                 right: 0,
                 bottom: 73,
                 child: Container(
-                  child: myLocation == null
-                      ? Center(
-                          child: Text("Map is loading"),
-                        )
-                      : GoogleMap(
-                          mapType: MapType.normal,
-                          initialCameraPosition: CameraPosition(
-                            target: myLocation,
-                            zoom: 10,
-                          ),
-                          markers: _markers.values.toSet(),
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
-                          },
-                          myLocationEnabled: true,
-                        ),
-                ),
+                    child: myLocation == null
+                        ? Center(
+                            child: Text("Map is loading"),
+                          )
+                        : Stack(
+                            children: <Widget>[
+                              GoogleMap(
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                  target: myLocation,
+                                  zoom: 10,
+                                ),
+                                markers: _markers.values.toSet(),
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                  controller.setMapStyle(_mapStyle);
+                                },
+                                myLocationEnabled: true,
+                              ),
+                              Positioned(
+                                top: 10,
+                                right: 10,
+                                child: InkWell(
+                                  child: Image.asset(
+                                    "assets/all_partners.png",
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AllPartnersView()));
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
               ),
               Positioned(
                 bottom: 0,
