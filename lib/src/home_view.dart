@@ -113,9 +113,6 @@ class _HomeViewState extends State<HomeView> {
             .split(",")
             .contains(category.toLowerCase()))
         .toList();
-    print(filteredMerchants.length);
-    print(filteredMerchants[0].latitude);
-    print(filteredMerchants[0].longitude);
   }
 
   filterByKeyword({String keyword}) {
