@@ -9,6 +9,7 @@ class MerchantDB {
   getMerchants({Function fetched}) {
     List<Merchant> allMerchants = new List<Merchant>();
     ref.child("merchants").onValue.listen((Event event) {
+      allMerchants.clear();
       for (Map<dynamic, dynamic> value in event.snapshot.value.values) {
         allMerchants.add(new Merchant.fromJson(value));
       }
