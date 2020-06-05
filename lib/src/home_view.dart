@@ -65,7 +65,6 @@ class _HomeViewState extends State<HomeView> {
           markerId: MarkerId(merchant.merchantId),
           position: LatLng(merchant.latitude, merchant.longitude),
           icon: BitmapDescriptor.fromAsset('assets/pin.png'),
-          // infoWindow: InfoWindow(title: "Its me"),
           onTap: () {
             showBottomSheet(merchant);
           });
