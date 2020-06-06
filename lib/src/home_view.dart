@@ -110,11 +110,19 @@ class _HomeViewState extends State<HomeView> {
   filterByKeyword({String keyword}) {
     String keywd = keyword.toLowerCase();
     filteredMerchants.clear();
-    allMerchants.forEach((merchant) {
+    print("working");
+    print(allMerchants.length);
+    allMerchants.forEach((merchant) async {
+      if (merchant.name.toLowerCase().contains(keywd) ||
+          merchant.address.toLowerCase().contains(keywd)) {
+        filteredMerchants.add(merchant);
+        return;
+      }
+      if (merchant.offers == null) {
+        return;
+      }
       merchant.offers.forEach((offer) {
-        if (offer.title.toLowerCase().contains(keywd) ||
-            merchant.name.toLowerCase().contains(keywd) ||
-            merchant.address.toLowerCase().contains(keywd)) {
+        if (offer.title.toLowerCase().contains(keywd)) {
           filteredMerchants.add(merchant);
         }
       });
@@ -169,6 +177,7 @@ class _HomeViewState extends State<HomeView> {
                     onSubmitted: (keyword) {
                       setState(() {
                         filterByKeyword(keyword: keyword);
+                        print("fliter done.");
                         _setMarker();
                       });
                     },
