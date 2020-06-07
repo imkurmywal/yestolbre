@@ -153,6 +153,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    var platform = Theme.of(context).platform;
     return Scaffold(
         resizeToAvoidBottomPadding: true,
         appBar: AppBar(
@@ -216,8 +217,8 @@ class _HomeViewState extends State<HomeView> {
                                 myLocationEnabled: true,
                               ),
                               Positioned(
-                                top: 10,
-                                right: 10,
+                                top: 12,
+                                right: platform == TargetPlatform.iOS ? 10 : 60,
                                 child: InkWell(
                                   child: Image.asset(
                                     "assets/all_partners.png",
@@ -229,6 +230,14 @@ class _HomeViewState extends State<HomeView> {
                                             builder: (context) =>
                                                 AllPartnersView()));
                                   },
+                                ),
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: -10,
+                                child: Image.asset(
+                                  "assets/logo.png",
+                                  height: 40,
                                 ),
                               ),
                             ],
