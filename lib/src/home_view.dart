@@ -92,9 +92,11 @@ class _HomeViewState extends State<HomeView> {
     MerchantDB.shared.getMerchants(fetched: (List<Merchant> merchants) {
       allMerchants = merchants;
       filterCategory(category: categories[_selectedIndex].title);
-      setState(() {
-        _setMarker();
-      });
+      if(this.mounted) {
+        setState(() {
+          _setMarker();
+        });
+      }
     });
   }
 
@@ -135,9 +137,9 @@ class _HomeViewState extends State<HomeView> {
     initPlatformState();
     _locationServices();
     getList();
-    rootBundle.loadString('assets/style.txt').then((string) {
-      _mapStyle = string;
-    });
+//    rootBundle.loadString('assets/style.txt').then((string) {
+//      _mapStyle = string;
+//    });
   }
 
   initPlatformState() async {
@@ -258,12 +260,14 @@ class _HomeViewState extends State<HomeView> {
                         return GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
-                            setState(() {
-                              _selectedIndex = index;
-                              filterCategory(
-                                  category: categories[_selectedIndex].title);
-                              _setMarker();
-                            });
+                            if(this.mounted) {
+                              setState(() {
+                                _selectedIndex = index;
+                                filterCategory(
+                                    category: categories[_selectedIndex].title);
+                                _setMarker();
+                              });
+                            }
                           },
                           child: Container(
                             child: Container(
